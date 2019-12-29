@@ -6,9 +6,6 @@ jobs:
     steps:
       - checkout
       - run: ./build.sh -b /root/bbndk -t build 
-    filters:
-      branches:
-        only: master        
 workflows:
   version: 2.1
   test:
