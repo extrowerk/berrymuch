@@ -5,7 +5,7 @@ jobs:
       - image: yamsergey/bb10-ndk:0.1
     steps:
       - checkout
-      - run: docker run -t -v "${PWD}":/root/berrymuch yamsergey/bb10-ndk:0.2 /bin/bash -c 'cd /root/berrymuch; ./build.sh -b /root/bbndk -t build' 
+      - run: cd /root/berrymuch && ./build.sh -b /root/bbndk -t build 
 workflows:
   version: 2.1
   test:
