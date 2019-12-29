@@ -1,0 +1,13 @@
+version: 2.1
+jobs:
+  test:
+    docker: 
+      - image: yamsergey/bb10-ndk:0.1
+    steps:
+      - checkout
+      - run: make build
+workflows:
+  version: 2.1
+  test:
+    jobs:
+      - test
