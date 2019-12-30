@@ -228,7 +228,7 @@ then
 
   # Unpack and organize
   echo "Unpacking"
-  $UNPACKCOMD $DISTVER.$DISTSUFFIX
+  $UNPACKCOMD $DISTVER.$DISTSUFFIX $UNPACKSUFFIX
   TASK=patch
 fi
 }

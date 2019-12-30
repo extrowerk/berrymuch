@@ -16,7 +16,8 @@ DISTVER="git-2.24.1"
 DISTSUFFIX="tar.xz"
 DISTFILES="https://mirrors.edge.kernel.org/pub/software/scm/git/$DISTVER.$DISTSUFFIX"
 
-UNPACKCOMD="tar -xJf --no-same-owner"
+UNPACKSUFFIX="--no-same-owner"
+UNPACKCOMD="tar -xJf"
 PATCHLEVEL=1
 
 TASK=fetch
