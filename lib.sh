@@ -51,6 +51,32 @@ process_args()
 
 }
 
+function unpack_required_packages()
+{
+	I=0
+	while [ -z != ${BUILD_DEP[$I]} ];
+	do
+		pushd $WORKDIR > /dev/null || exit 1
+			unzip /$PKGDIR/${BUILD_DEP[$I]}.zip
+		popd > /dev/null
+		let I=$(($I+1))
+	done
+}
+
+function check_required_packages()
+{
+	I=0
+	while [ -z != ${BUILD_DEP[$I]} ];
+	do
+		F=$PKGDIR/${BUILD_DEP[$I]}.zip
+		ls $F || {
+			echo "Fatal: package ${BUILD_DEP[$I]} not found. Required for build"
+			exit 1
+		}
+		let I=$(($I+1))
+	done
+}
+
 function check_required_binaries()
 {
 	I=0
@@ -157,8 +183,8 @@ function build_all()
     if [ -d "$dir" ] && [ -e "$dir/build.sh" ]; then
       [ -f "$dir/vars.sh" ] && {
         . $dir/vars.sh
-        [ -f ../packages/$DISTVER.zip ] && {
-          echo "Warning: skipping build of $DISTVER (file packages/$DISTVER.zip already exists) "
+        [ -f $PKGDIR/$DISTVER.zip ] && {
+          echo "Warning: skipping build of $DISTVER (file $PKGDIR/$DISTVER.zip already exists) "
           continue;
         }
       }
