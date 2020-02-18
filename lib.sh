@@ -25,8 +25,6 @@ Run this to fetch, patch, build, bundle and deploy dev tools for the playbook.
 OPTIONS:
    -h      Show this message
    -b      The absolute path to your BB Native SDK folder [/abs/path/tp/bbndk]
-   -i      The IP address of this machine (will prompt if not specified)
-   -l      The login you use for the QNX Foundry27 site, if you have one [user@host]
    -p      The prefix on your BB10 device to install to (default $DEFAULTPREFIX)
    -t      The build task to perform: [ build | build_and_deploy | bundle | deploy]
    -s      The task to pass to each package [fetch | patch | build | install | bundle]
@@ -37,12 +35,11 @@ process_args()
 {
   SUBTASKFLAG=
   SUBTASK=
-  while getopts "b:i:l:t:hs:p:" OPTION
+  while getopts "b:t:hs:p:" OPTION
   do
     case "$OPTION" in
       h) usage; exit 1;;
       b) echo "$OPTARG" > conf/bbtools;;
-      l) echo "$OPTARG" > conf/login;;
       p) echo "$OPTARG" > conf/prefix;;
       t) TASK="$OPTARG";;
       s) SUBTASK="$OPTARG"; SUBTASKFLAG="-t";;
@@ -69,7 +66,6 @@ function source_bbtools()
   if [ -e "$ROOTDIR/conf/bbtools" ]; then
     BBTOOLS=`cat "$ROOTDIR/conf/bbtools"`
   else
-    # TODO prompt the user
     usage
     exit 1
   fi
@@ -85,14 +81,6 @@ function source_bbtools()
   source $BBTOOLS/bbndk-env*.sh
   TARGETNAME=`basename $(dirname $QNX_TARGET)`
 
-}
-
-function get_foundry_login()
-{
-  LOGIN="guest --password \"\""
-  if [ -e "$ROOTDIR/conf/login" ]; then
-    LOGIN=`cat "$ROOTDIR/conf/login"`
-  fi
 }
 
 function get_prefix()
@@ -142,7 +130,6 @@ function init()
   process_args "$@"
   configure_dirs
   source_bbtools
-  get_foundry_login
   get_prefix
 }
 
@@ -155,14 +142,8 @@ function build_all()
   for dir in $ALLPORTS
   do
     if [ -d "$dir" ] && [ -e "$dir/build.sh" ]; then
-      [ -f "$dir/vars.sh" ] && {
-        . $dir/vars.sh
-        [ -f ../packages/$DISTVER.zip ] && {
-          echo "Warning: skipping build of $DISTVER (file packages/$DISTVER.zip already exists) "
-          continue;
-        }
-      }
       echo "Building $dir"
+
       cd "$dir"
       ./build.sh $SUBTASKFLAG $SUBTASK
       cd "$PORTSDIR"
@@ -179,22 +160,19 @@ Run this to fetch, patch, build, bundle and deploy $DISTVER for the playbook.
 
 OPTIONS:
    -h      Show this message
-   -b      The absolute path to your bbpb-sdk folder [/abs/path/tp/bbpb-sdk]
+   -b      The absolute path to your BB Native SDK folder [/abs/path/tp/bbndk]
    -t      The build task to start at: [fetch | patch | build | install | bundle]
-   -i      The IP address of this machine
-   -l      The login you use for the QNX Foundry27 site, if you have one [user@host]
    -p      The prefix on your BB10 device to install to (default $DEFAULTPREFIX)
 EOF
 }
 
 function process_subargs()
 {
-while getopts "b:l:t:i:hp:" OPTION
+while getopts "b:t:hp:" OPTION
 do
   case "$OPTION" in
     h) subusage; exit 1;;
     b) echo "$OPTARG" > "$ROOTDIR/conf/bbtools";;
-    l) echo "$OPTARG" > "$ROOTDIR/conf/login";;
     p) echo "$OPTARG" > "$ROOTDIR/conf/prefix";;
     t) TASK="$OPTARG";;
   esac
@@ -206,7 +184,6 @@ function package_init()
   configure_dirs
   process_subargs "$@"
   source_bbtools
-  get_foundry_login
   get_prefix
 
   EXECDIR="$PWD"
@@ -263,7 +240,6 @@ then
   #  make clean || true
   #  make distclean || true
   #fi
-  # configure
   eval $CONFIGURE_CMD
   eval $MAKE_PREFIX make $MYMAKEFLAGS || \
   eval $MAKE_PREFIX make
@@ -287,7 +263,18 @@ if [ "$TASK" == "bundle" ]
 then
   echo "Bundling"
   cd "$DESTDIR/$PREFIX"
-  zip -r -y -u "$ZIPFILE" * || true
+
+  echo '' > "+COMMENT"
+  echo '' > "+DESC"
+  cp "$ROOTDIR/+BUILD_INFO" .
+
+  echo "@cwd $PREFIX"                                                > "+CONTENTS"
+  echo "@name $DISTVER"                                             >> "+CONTENTS"
+  find . -type f| awk -F '\\.\\/' '{print $2}' | grep -v '^+'       >> "+CONTENTS"
+  echo "@cwd ."                                                     >> "+CONTENTS"
+  echo -e "@ignore\n+COMMENT\n@ignore\n+DESC\n@ignore\n+BUILD_INFO" >> "+CONTENTS"
+
+  tar zcpvf "$PKGDIR/$DISTVER.tgz" *
   mv "$DESTDIR" "$ARCHIVEDIR/$DISTVER"
 fi
 }
