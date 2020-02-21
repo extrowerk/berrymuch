@@ -14,50 +14,50 @@ DISTVER="gcc"
 
 package_init "$@"
 
+CONFIGURE_CMD="$WORKDIR/gcc/configure
+                   --host=$PBHOSTARCH
+                   --build=$PBBUILDARCH
+                   --target=$PBTARGETARCH
+                   MAKEINFO='/usr/bin/makeinfo --force'
+                   --srcdir=$WORKDIR/gcc
+                   --with-as=ntoarm-as
+                   --with-ld=ntoarm-ld
+                   --with-sysroot=$QNX_TARGET
+                   --disable-werror
+                   --prefix=$PREFIX
+                   --exec-prefix=$PREFIX
+                   --libdir=$PREFIX/lib
+                   --libexecdir=$PREFIX/lib
+                   --with-local-prefix=$PREFIX
+                   --enable-cheaders=c
+                   --enable-languages=c++
+                   --enable-threads=posix
+                   --disable-nls
+                   --disable-libssp
+                   --disable-tls
+                   --disable-libstdcxx-pch
+                   --enable-libmudflap
+                   --enable-__cxa_atexit
+                   --with-gxx-include-dir=$PREFIX/$TARGETNAME/qnx6/usr/include/c++/4.6.3
+                   --enable-multilib
+                   --enable-shared
+                   --enable-gnu-indirect-function
+                   --with-arch=armv7-a --with-float=softfp --with-fpu=vfpv3-d16 --with-mode=thumb
+                   CC=$PBTARGETARCH-gcc
+                   LDFLAGS='-Wl,-s '
+                   AUTOMAKE=: AUTOCONF=: AUTOHEADER=: AUTORECONF=: ACLOCAL=:
+                   "
+
 if [ "$TASK" == "fetch" ]
 then
-  cd "$EXECDIR"
+  cd "$WORKROOT"
   # fetch
-  echo "Fetching gcc sources if not already present"
   ls -d gcc 2>/dev/null 2>&1 || \
-  git clone https://github.com/berryfarm/gcc
+  git clone https://github.com/BerryFarm/$DISTVER
 
   TASK=build
 fi
 
-CONFIGURE_CMD="$EXECDIR/gcc/configure 
-                   --host=$PBHOSTARCH 
-                   --build=$PBBUILDARCH 
-                   --target=$PBTARGETARCH 
-                   MAKEINFO='/usr/bin/makeinfo --force'
-                   --srcdir=$EXECDIR/gcc 
-                   --with-as=ntoarm-as 
-                   --with-ld=ntoarm-ld 
-                   --with-sysroot=$QNX_TARGET 
-                   --disable-werror 
-                   --prefix=$PREFIX 
-                   --exec-prefix=$PREFIX 
-                   --libdir=$PREFIX/lib
-                   --libexecdir=$PREFIX/lib
-                   --with-local-prefix=$PREFIX
-                   --enable-cheaders=c 
-                   --enable-languages=c++ 
-                   --enable-threads=posix 
-                   --disable-nls 
-                   --disable-libssp 
-                   --disable-tls 
-                   --disable-libstdcxx-pch 
-                   --enable-libmudflap 
-                   --enable-__cxa_atexit 
-                   --with-gxx-include-dir=$PREFIX/$TARGETNAME/qnx6/usr/include/c++/4.6.3 
-                   --enable-multilib 
-                   --enable-shared 
-                   --enable-gnu-indirect-function 
-                   --with-arch=armv7-a --with-float=softfp --with-fpu=vfpv3-d16 --with-mode=thumb
-                   CC=$PBTARGETARCH-gcc 
-                   LDFLAGS='-Wl,-s ' 
-                   AUTOMAKE=: AUTOCONF=: AUTOHEADER=: AUTORECONF=: ACLOCAL=:
-                   "
 package_build
 package_install
 
@@ -68,7 +68,7 @@ ln -sf ./gcc ./gcc.pkgsrc
 # these are broken
 rm -rf $DESTDIR/$PREFIX/$TARGETNAME/qnx6/usr/include
 cp $EXECDIR/ldd $DESTDIR/$PREFIX/bin/
-  
+
 package_bundle
 
 # and pack up the system headers, etc
