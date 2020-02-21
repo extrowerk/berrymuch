@@ -136,7 +136,8 @@ function init()
 function build_all()
 {
   ALLPORTS="bash bc bison bzip2 cflow coreutils cronie diffutils ed fakeroot file findutils gcc gdbm gettext grep groff gzip ircii jansson libevent libmpg123 libuuid m4 make man oniguruma jq openssh openssl ca-certificates curl git lynx patch rsync sc sqlite tar taskwarrior tig tmux vim wget xz yaml youtube-dl zeromq zlib ansiweather"
-  BROKEN="gdb"
+  ALLPORTS="gdbm gettext grep groff gzip ircii jansson libevent libmpg123 libuuid m4 make man oniguruma jq openssh openssl ca-certificates curl git lynx patch rsync sc sqlite tar taskwarrior tig tmux vim wget xz yaml youtube-dl zeromq zlib ansiweather"
+  BROKEN="gdb gcc"
 
   cd "$PORTSDIR"
   for dir in $ALLPORTS
@@ -264,17 +265,20 @@ then
   echo "Bundling"
   cd "$DESTDIR/$PREFIX"
 
+  cp "$ROOTDIR/+BUILD_INFO" .
   echo '' > "+COMMENT"
   echo '' > "+DESC"
-  cp "$ROOTDIR/+BUILD_INFO" .
 
-  echo "@cwd $PREFIX"                                                > "+CONTENTS"
-  echo "@name $DISTVER"                                             >> "+CONTENTS"
-  find . -type f| awk -F '\\.\\/' '{print $2}' | grep -v '^+'       >> "+CONTENTS"
-  echo "@cwd ."                                                     >> "+CONTENTS"
-  echo -e "@ignore\n+COMMENT\n@ignore\n+DESC\n@ignore\n+BUILD_INFO" >> "+CONTENTS"
+  find . -type f| awk -F '\\.\\/' '{print $2}' | grep -v '^+' > /tmp/PLIST
 
-  tar zcpvf "$PKGDIR/$DISTVER.tgz" *
+  echo "@cwd $PREFIX"                                                > +CONTENTS
+  echo "@name $DISTVER"                                             >> +CONTENTS
+  cat /tmp/PLIST                                                    >> +CONTENTS
+  echo "@cwd ."                                                     >> +CONTENTS
+  echo -e "@ignore\n+COMMENT\n@ignore\n+DESC\n@ignore\n+BUILD_INFO" >> +CONTENTS
+
+  tar zcpvf "$PKGDIR/$DISTVER.tgz" +CONTENTS +COMMENT +DESC +BUILD_INFO $(cat /tmp/PLIST | tr '\n' ' ')
+
   mv "$DESTDIR" "$ARCHIVEDIR/$DISTVER"
 fi
 }
