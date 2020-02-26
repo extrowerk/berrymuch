@@ -4,6 +4,7 @@
 CVS
 work/
 *.tar.gz
+*.tgz
 *.tar.bz2
 *.zip
 install.sh
