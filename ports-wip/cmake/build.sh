@@ -2,7 +2,6 @@
 
 set -e
 source ../../lib.sh
-source ./vars.sh
 TASK=fetch
 
 DISTFILES="https://cmake.org/files/v3.9/$DISTVER.$DISTSUFFIX"
