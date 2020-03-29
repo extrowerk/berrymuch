@@ -95,11 +95,11 @@ list( APPEND BLACKBERRY_SYSTEM_INCLUDE_DIRS "${BLACKBERRY_TARGET_ROOT}/qnx6/usr/
 
 # Flags and preprocessor definitions
 if( BLACKBERRY_ARCHITECTURE STREQUAL "arm" )
- set( BLACKBERRY_CC_FLAGS  " -V4.6.3,gcc_ntoarmv7le -D__QNX__" )
- set( BLACKBERRY_CXX_FLAGS " -V4.6.3,gcc_ntoarmv7le -Y_gpp -D__QNX__" )
+ set( BLACKBERRY_CC_FLAGS  " -V4.8.3,gcc_ntoarmv7le -D__QNX__" )
+ set( BLACKBERRY_CXX_FLAGS " -V4.8.3,gcc_ntoarmv7le -Y_gpp -D__QNX__" )
 else()
- set( BLACKBERRY_CC_FLAGS  " -V4.6.3,gcc_ntox86 -D__QNX__" )
- set( BLACKBERRY_CXX_FLAGS " -V4.6.3,gcc_ntox86 -Y_gpp -D__QNX__" )
+ set( BLACKBERRY_CC_FLAGS  " -V4.8.3,gcc_ntox86 -D__QNX__" )
+ set( BLACKBERRY_CXX_FLAGS " -V4.8.3,gcc_ntox86 -Y_gpp -D__QNX__" )
 endif()
 set( BLACKBERRY 1 )
 
@@ -116,8 +116,8 @@ if( BLACKBERRY_ARCHITECTURE STREQUAL "arm" )
  set( CMAKE_CXX_FLAGS_DEBUG   "-marm -Os -finline-limit=64" )
  set( CMAKE_C_FLAGS_DEBUG     "-marm -Os -finline-limit=64" )
 else()
- set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=i486" )
- set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=i486" )
+ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=i486 -std=c++11")
+ set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=i486")
 endif()
 
 # Cache flags
