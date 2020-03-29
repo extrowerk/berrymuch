@@ -1,0 +1,5 @@
+Hit issue with ZLIB and cmake, maybe related to
+https://github.com/mesonbuild/meson/issues/4812
+
+To read and try
+https://cristianadam.eu/20181202/a-better-qnx-cmake-toolchain-file
