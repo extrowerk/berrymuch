@@ -3,9 +3,11 @@
 set -e
 source ../../lib.sh
 TASK=fetch
+DISTVER=cmake-2.8.5
+DISTSUFFIX=tar.gz
 
-DISTFILES="https://cmake.org/files/v3.9/$DISTVER.$DISTSUFFIX"
-UNPACKCOMD="tar -xf"
+DISTFILES="https://cmake.org/files/v2.8/$DISTVER.$DISTSUFFIX"
+UNPACKCOMD="tar -zxvf"
 
 package_init "$@"
 
@@ -14,7 +16,7 @@ CONFIGURE_CMD="PBTARGETARCH=\"$PBTARGETARCH\"
               PREFIX=\"$PREFIX\"
               QNX_TARGET=\"$QNX_TARGET\"
               cmake \
-              -DCMAKE_TOOLCHAIN_FILE=\"$EXECDIR/bb10.toolchain.cmake\" \
+              -DCMAKE_TOOLCHAIN_FILE=\"$EXECDIR/blackberry.toolchain.cmake\" \
               -DCMAKE_BUILD_TYPE=release ."
 
 package_fetch
