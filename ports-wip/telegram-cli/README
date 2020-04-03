@@ -1,0 +1,28 @@
+Stuck at compilation issue:
+
+configure: WARNING: unrecognized options: --without-readline
+
+cat tgl/scheme.tl tgl/encrypted_scheme.tl tgl/binlog.tl tgl/append.tl tgl/mtproto.tl > auto/scheme.tl
+arm-unknown-nto-qnx8.0.0eabi-gcc -I. -I. -I./tgl -I/berrymuch/archive/libevent-2.0.22-stable//accounts/1000/shared/documents/clitools/include -I/berrymuch/archive/lua-5.3.5//accounts/1000/shared/documents/clitools  -I/usr/local/include -I/include -I/berrymuch/archive/openssl-1.0.2t//accounts/1000/shared/documents/clitools/include -DHAVE_CONFIG_H -Wall -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -Wno-unused-function -Wno-builtin-memcpy-chk-size -iquote ./tgl/tl-parser -c -MP -MD -MF dep/tl-parser.d -MQ objs/tl-parser.o -o objs/tl-parser.o tgl/tl-parser/tl-parser.c
+In file included from tgl/tl-parser/tl-parser.c:38:0:
+tgl/tl-parser/portable_endian.h:136:3: error: #error platform not supported
+tgl/tl-parser/tl-parser.c: In function 'wint':
+tgl/tl-parser/tl-parser.c:2729:3: warning: implicit declaration of function 'htole32' [-Wimplicit-function-declaration]
+tgl/tl-parser/tl-parser.c: In function 'wll':
+tgl/tl-parser/tl-parser.c:2763:3: warning: implicit declaration of function 'htole64' [-Wimplicit-function-declaration]
+tgl/tl-parser/tl-parser.c: At top level:
+cc1: warning: unrecognized command line option "-Wno-builtin-memcpy-chk-size" [enabled by default]
+Makefile.tl-parser:4: recipe for target 'objs/tl-parser.o' failed
+make: *** [objs/tl-parser.o] Error 1
+arm-unknown-nto-qnx8.0.0eabi-gcc -I. -I. -I./tgl -I/berrymuch/archive/libevent-2.0.22-stable//accounts/1000/shared/documents/clitools/include -I/berrymuch/archive/lua-5.3.5//accounts/1000/shared/documents/clitools  -I/usr/local/include -I/include -I/berrymuch/archive/openssl-1.0.2t//accounts/1000/shared/documents/clitools/include -DHAVE_CONFIG_H -Wall -Wextra -Wno-missing-field-initializers -Wno-deprecated-declarations -fno-strict-aliasing -fno-omit-frame-pointer -ggdb -Wno-unused-parameter -fPIC -Wno-unused-function -Wno-builtin-memcpy-chk-size -iquote ./tgl/tl-parser -c -MP -MD -MF dep/tl-parser.d -MQ objs/tl-parser.o -o objs/tl-parser.o tgl/tl-parser/tl-parser.c
+In file included from tgl/tl-parser/tl-parser.c:38:0:
+tgl/tl-parser/portable_endian.h:136:3: error: #error platform not supported
+tgl/tl-parser/tl-parser.c: In function 'wint':
+tgl/tl-parser/tl-parser.c:2729:3: warning: implicit declaration of function 'htole32' [-Wimplicit-function-declaration]
+tgl/tl-parser/tl-parser.c: In function 'wll':
+tgl/tl-parser/tl-parser.c:2763:3: warning: implicit declaration of function 'htole64' [-Wimplicit-function-declaration]
+tgl/tl-parser/tl-parser.c: At top level:
+cc1: warning: unrecognized command line option "-Wno-builtin-memcpy-chk-size" [enabled by default]
+Makefile.tl-parser:4: recipe for target 'objs/tl-parser.o' failed
+make: *** [objs/tl-parser.o] Error 1
+
