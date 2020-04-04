@@ -11,10 +11,14 @@ source ../../lib.sh
 
 DISTVER="telegram-cli"
 DEPENDS="libevent openssl jansson"
+
 BUILD_DEP_BINS=(lua5.2)
 check_required_binaries
-#TASK=fetch
-TASK=build
+TASK=fetch
+
+BUILD_DEP_PKGS=(libc6-dev zlib1g-dev zlib1g:amd64)
+# to be checked
+
 
 #GIT_REPO=https://github.com/kenorb-contrib/tg.git $DISTVER
 GIT_TAG=1.3.1
