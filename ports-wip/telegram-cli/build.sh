@@ -73,6 +73,12 @@ then
   #  make distclean || true
   #fi
 
+  echo DEBUG: pwd=$(pwd)
+  cd tgl/tl-parser
+  touch config.h
+  make tl-parser CFLAGS="-I/usr/include -I/usr/include/i386-linux-gnu" LDFLAGS="-lz"
+  cd ../../
+
   # configure
   eval $CONFIGURE_CMD
   eval $MAKE_PREFIX make $MYMAKEFLAGS || \
