@@ -20,6 +20,7 @@ TASK=build
 GIT_TAG=1.3.1
 
 GIT_REPO=https://github.com/berryamin/tg.git
+GIT_REPO_TGL=https://github.com/berryamin/tgl.git
 GIT_TAG=bb10
 
 package_init "$@"
@@ -32,6 +33,7 @@ CONFIGURE_CMD="autoconf ; ./configure
 		--disable-libconfig
 		--disable-liblua
 		--disable-json
+		--enable-threads=posix
 		--with-openssl=$ARCHIVEDIR/openssl-1.0.2t/$PREFIX
 		CFLAGS=\"-I$ARCHIVEDIR/libevent-2.0.22-stable/$PREFIX/include -I$ARCHIVEDIR/lua-5.3.5/$PREFIX\"
 		LDFLAGS=\"-L$ARCHIVEDIR/libevent-2.0.22-stable/$PREFIX/lib -L$ARCHIVEDIR/lua-5.3.5/$PREFIX/lib -lsocket -levent\"
@@ -43,9 +45,16 @@ if [ "$TASK" == "fetch" ]
 then
   cd "$WORKROOT"
   [ -d $DISTVER ] || {
-	git clone --recursive $GIT_REPO $DISTVER
-  	cd $DISTVER
+	git clone $GIT_REPO $DISTVER
+  	cd $DISTVER/
   	git checkout $GIT_TAG
+
+	# TGL library
+	git clone $GIT_REPO_TGL tgl
+	cd tgl
+  	git checkout $GIT_TAG
+
+	cd ..
    }
   cd "$WORKDIR"
   TASK=patch
