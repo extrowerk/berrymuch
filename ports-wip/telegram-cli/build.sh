@@ -35,10 +35,9 @@ CONFIGURE_CMD="autoconf ; ./configure
                 --prefix=$PREFIX 
 		--disable-libconfig
 		--disable-liblua
-		--disable-json
 		--with-openssl=$ARCHIVEDIR/openssl-1.0.2t/$PREFIX
-		CFLAGS=\"-I$ARCHIVEDIR/libevent-2.0.22-stable/$PREFIX/include -I$ARCHIVEDIR/lua-5.3.5/$PREFIX\"
-		LDFLAGS=\"-L$ARCHIVEDIR/libevent-2.0.22-stable/$PREFIX/lib -L$ARCHIVEDIR/lua-5.3.5/$PREFIX/lib -lsocket -levent\"
+		CFLAGS=\"-I$ARCHIVEDIR/libevent-2.0.22-stable/$PREFIX/include -I$ARCHIVEDIR/lua-5.3.5/$PREFIX -I$ARCHIVEDIR/jansson-2.11/$PREFIX\"
+		LDFLAGS=\"-L$ARCHIVEDIR/libevent-2.0.22-stable/$PREFIX/lib -L$ARCHIVEDIR/lua-5.3.5/$PREFIX/lib -L$ARCHIVEDIR/jansson-2.11/$PREFIX/lib -lsocket -levent -ljansson\"
                 CC=$PBTARGETARCH-gcc
                 MAKEINFO='/usr/bin/makeinfo --force'
                 "
