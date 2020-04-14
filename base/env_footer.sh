@@ -3,12 +3,10 @@ PATH="$NATIVE_TOOLS/bin:$NATIVE_TOOLS/sbin:$PATH"
 LD_LIBRARY_PATH="$NATIVE_TOOLS/lib:$QNX_TARGET/armle-v7/usr/lib:$LD_LIBRARY_PATH"
 export PATH LD_LIBRARY_PATH
 
-#MAKEFLAGS="-I$NATIVE_TOOLS/include"
-MAKEFLAGS="-I$QNX_TARGET/usr/include"
+MAKEFLAGS="-I$NATIVE_TOOLS/include -I$QNX_TARGET/usr/include"
 export MAKEFLAGS
 
 QNX_HOST="$NATIVE_TOOLS"
-#QNX_CONFIGURATION="$NATIVE_TOOLS/etc/qnxconf"
 QCONF_OVERRIDE=$NATIVE_TOOLS/qconf-override.mk
 export QNX_HOST QCONF_OVERRIDE
 
@@ -36,7 +34,10 @@ alias ls='ls --color=auto'
 #export FAKEROOTFUID=100
 #export FAKEROOTFGID=100
 
+# pkg_install
+export PKG_DBDIR="$NATIVE_TOOLS/var/db/pkg"
+
 # locale
 export LC_CTYPE=en_US.UTF-8
 
-echo "Berrymuch v0.3\n"
+echo "Berrymuch v0.4\n"

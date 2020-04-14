@@ -10,10 +10,10 @@ source ../../lib.sh
 DISTVER="pkg_install-master"
 DISTSUFFIX="zip"
 
-DISTFILES="https://codeload.github.com/dressupgeekout/pkg_install/zip/master"
+DISTFILES="https://codeload.github.com/berryfarm/pkg_install/zip/master"
 UNPACKCOMD="unzip"
 
-LIBFETCH_DIR="libfetch-xbps-2.0"
+LIBFETCH_DIR="libfetch-bmuch-0.45"
 LIBNBCOMPAT_DIR="libnbcompat-20180822"
 
 TASK=fetch

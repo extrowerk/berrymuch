@@ -1,7 +1,4 @@
 .DS_Store
-.svn
-.cvs
-CVS
 work/
 *.tar.gz
 *.tgz

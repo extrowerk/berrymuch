@@ -20,13 +20,13 @@ usage()
 cat << EOF
 usage: $0 options
 
-Run this to fetch, patch, build, bundle and deploy dev tools for the playbook.
+Run this to fetch, patch, build, bundle dev tools for the BB10 device.
 
 OPTIONS:
    -h      Show this message
    -b      The absolute path to your BB Native SDK folder [/abs/path/tp/bbndk]
    -p      The prefix on your BB10 device to install to (default $DEFAULTPREFIX)
-   -t      The build task to perform: [ build | build_and_deploy | bundle | deploy]
+   -t      The build task to perform: [ build | bundle ]
    -s      The task to pass to each package [fetch | patch | build | install | bundle]
 EOF
 }
@@ -121,7 +121,6 @@ function configure_dirs()
   WORKROOT="$ROOTDIR/work"
   mkdir -p "$WORKROOT"
   PORTSDIR="$ROOTDIR/ports"
-  ZIPFILE="$ROOTDIR/clitools.zip"
 }
 
 function init()
@@ -136,8 +135,6 @@ function init()
 function build_all()
 {
   ALLPORTS="bash bc bison bzip2 cflow coreutils cronie diffutils ed fakeroot file findutils gcc gdbm gettext grep groff gzip ircii jansson libevent libmpg123 libuuid m4 make man oniguruma jq openssh openssl ca-certificates curl git lynx patch rsync sc sqlite tar taskwarrior tig tmux vim wget xz yaml youtube-dl zeromq zlib ansiweather"
-  ALLPORTS="gdbm gettext grep groff gzip ircii jansson libevent libmpg123 libuuid m4 make man oniguruma jq openssh openssl ca-certificates curl git lynx patch rsync sc sqlite tar taskwarrior tig tmux vim wget xz yaml youtube-dl zeromq zlib ansiweather"
-  BROKEN="gdb gcc"
 
   cd "$PORTSDIR"
   for dir in $ALLPORTS
@@ -157,7 +154,7 @@ function subusage()
 cat << EOF
 usage: $0 options
 
-Run this to fetch, patch, build, bundle and deploy $DISTVER for the playbook.
+Run this to fetch, patch, build and bundle $DISTVER for the BB10 device.
 
 OPTIONS:
    -h      Show this message
@@ -190,7 +187,6 @@ function package_init()
   EXECDIR="$PWD"
   WORKDIR="$WORKROOT/$DISTVER"
   mkdir -p "$WORKDIR"
-  ZIPFILE="$PKGDIR/$DISTVER.zip"
 }
 
 function package_fetch()
@@ -236,11 +232,7 @@ if [ "$TASK" == "build" ]
 then
   echo "Building"
   cd "$WORKDIR"
-  # clean up if we have a previous build
-  #if [ -e "Makefile" ]; then
-  #  make clean || true
-  #  make distclean || true
-  #fi
+
   eval $CONFIGURE_CMD
   eval $MAKE_PREFIX make $MYMAKEFLAGS || \
   eval $MAKE_PREFIX make
@@ -269,7 +261,7 @@ then
   echo '' > "+COMMENT"
   echo '' > "+DESC"
 
-  find . -type f| awk -F '\\.\\/' '{print $2}' | grep -v '^+' > /tmp/PLIST
+  find . -type f | awk -F '\\.\\/' '{print $2}' | grep -v '^+' > /tmp/PLIST
 
   echo "@cwd $PREFIX"                                                > +CONTENTS
   echo "@name $DISTVER"                                             >> +CONTENTS
