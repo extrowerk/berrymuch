@@ -52,7 +52,6 @@ CONFIGURE_CMD="cd "tools/binutils/branches/710_release/";
                    --libdir=$PREFIX/lib
                    --libexecdir=$PREFIX/lib
                    --with-local-prefix=$PREFIX
-				   --enable-gold
                    CC=$PBTARGETARCH-gcc
                    LDFLAGS='-Wl,-s '
                    AUTOMAKE=: AUTOCONF=: AUTOHEADER=: AUTORECONF=: ACLOCAL=:
