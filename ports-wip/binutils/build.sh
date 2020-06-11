@@ -10,7 +10,7 @@ set -e
 source ../../lib.sh
 TASK=fetch
 
-DISTVER="binutils"
+DISTVER="710_release"
 
 package_init "$@"
 
@@ -22,9 +22,7 @@ then
 pwd
   ls -d gcc 2>/dev/null 2>&1 || \
 {
-  release=710_release
-  mkdir -p $release
-  cd $release
+  cd $DISTVER
   git init
   git config core.sparseCheckout true
   echo "tools/binutils/branches/710_release/" >> .git/info/sparse-checkout
@@ -36,7 +34,8 @@ pwd
 fi
 
 # Target have to be --target=arm-unknown-nto-qnx8.0.0eabi
-CONFIGURE_CMD="export ac_cv_func_ftello64=no;
+CONFIGURE_CMD="cd "tools/binutils/branches/710_release/";
+				export ac_cv_func_ftello64=no;
 				export ac_cv_func_fseeko64=no;
 				export ac_cv_func_fopen64=no;
 				export CFLAGS="$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare";
