@@ -35,16 +35,12 @@ pwd
   TASK=build
 fi
 
-# Now i have to cd in to the 710_release folder, and set up some env vars
-# How do i do that?
-
-export ac_cv_func_ftello64=no
-export ac_cv_func_fseeko64=no
-export ac_cv_func_fopen64=no
-export CFLAGS="$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare"
-
 # Target have to be --target=arm-unknown-nto-qnx8.0.0eabi
-CONFIGURE_CMD="$EXECDIR/gcc/configure 
+CONFIGURE_CMD="export ac_cv_func_ftello64=no;
+				export ac_cv_func_fseeko64=no;
+				export ac_cv_func_fopen64=no;
+				export CFLAGS="$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare";
+				$EXECDIR/gcc/configure 
                    --host=$PBHOSTARCH 
                    --build=$PBBUILDARCH 
                    --target=$PBTARGETARCH 
