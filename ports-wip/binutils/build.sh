@@ -20,7 +20,7 @@ then
   # fetch
   echo "Fetching binutils sources if not already present"
 pwd
-  ls -d work/$DISTVER 2>/dev/null 2>&1 || \
+  ls -d work/$DISTVER/tools 2>/dev/null 2>&1 || \
 {
   cd work/$DISTVER
   git init
@@ -36,25 +36,25 @@ fi
 # Target have to be --target=arm-unknown-nto-qnx8.0.0eabi
 CONFIGURE_CMD="cd "tools/binutils/branches/710_release/";
 				find . -name \"config.cache\" -exec rm -rf {} \;;
-				export ac_cv_func_ftello64=no;
-				export ac_cv_func_fseeko64=no;
-				export ac_cv_func_fopen64=no;
-				export CFLAGS=\"$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare\";
-				export LIBS=\"$LIBS -liconv\";
-				export LDFLAGS=\"$LDFLAGS -liconv\";
-				$EXECDIR/work/$DISTVER/tools/binutils/branches/710_release/configure
-                   --host=$PBHOSTARCH
-                   --build=$PBBUILDARCH
-                   --target=$PBTARGETARCH
-                   --with-sysroot=$QNX_TARGET
-                   --prefix=$PREFIX
-                   --exec-prefix=$PREFIX
-                   --libdir=$PREFIX/lib
-                   --libexecdir=$PREFIX/lib
-                   --with-local-prefix=$PREFIX
-                   CC=$PBTARGETARCH-gcc
-                   LDFLAGS='-Wl,-s '
-                   AUTOMAKE=: AUTOCONF=: AUTOHEADER=: AUTORECONF=: ACLOCAL=:
+				ac_cv_func_ftello64=no \
+				ac_cv_func_fseeko64=no \
+				ac_cv_func_fopen64=no \
+				CFLAGS=\"$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare\" \
+				LIBS=\"$LIBS -liconv\" \
+				LDFLAGS=\"$LDFLAGS -liconv\" \
+				./configure \
+                   --host=$PBHOSTARCH \
+                   --build=$PBBUILDARCH\ 
+                   --target=$PBTARGETARCH \
+                   --with-sysroot=$QNX_TARGET \
+                   --prefix=$PREFIX \
+                   --exec-prefix=$PREFIX \
+                   --libdir=$PREFIX/lib \
+                   --libexecdir=$PREFIX/lib \
+                   --with-local-prefix=$PREFIX \
+                   CC=$PBTARGETARCH-gcc \
+                   LDFLAGS='-Wl,-s ' \
+                   AUTOMAKE=: AUTOCONF=: AUTOHEADER=: AUTORECONF=: ACLOCAL=: 
                    "
 package_build
 package_install
