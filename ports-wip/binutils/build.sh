@@ -33,47 +33,21 @@ pwd
   TASK=build
 fi
 
-# Target have to be --target=arm-unknown-nto-qnx8.0.0eabi
-CONFIGURE_CMD="cd "tools/binutils/branches/710_release/";
-				find . -name \"config.cache\" -exec rm -rf {} \;;
-				ac_cv_func_ftello64=no \
-				ac_cv_func_fseeko64=no \
-				ac_cv_func_fopen64=no \
-				CFLAGS=\"$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare\" \
-				LIBS=\"$LIBS -liconv\" \
-				LDFLAGS=\"$LDFLAGS -liconv\" \
-				./configure \
-                   --host=$PBHOSTARCH \
-                   --build=$PBBUILDARCH\ 
-                   --target=$PBTARGETARCH \
-                   --with-sysroot=$QNX_TARGET \
-                   --prefix=$PREFIX \
-                   --exec-prefix=$PREFIX \
-                   --libdir=$PREFIX/lib \
-                   --libexecdir=$PREFIX/lib \
-                   --with-local-prefix=$PREFIX \
-                   CC=$PBTARGETARCH-gcc \
-                   LDFLAGS='-Wl,-s ' \
-                   AUTOMAKE=: AUTOCONF=: AUTOHEADER=: AUTORECONF=: ACLOCAL=: 
-                   "
+CONFIGURE_CMD="
+cd 'tools/binutils/branches/710_release/';
+#make clean;
+#find . -name 'config.cache' -exec rm -rf {} \;;
+export ac_cv_func_ftello64=no;
+export ac_cv_func_fseeko64=no;
+export ac_cv_func_fopen64=no;
+export CC='$PBTARGETARCH-gcc';
+export CFLAGS='$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare';
+export LIBS='$LIBS -liconv';
+export LDFLAGS='-Wl,-s ';
+export LDFLAGS='$LDFLAGS -liconv';
+./configure --prefix='$PREFIX' --host=$PBHOSTARCH --build=$PBBUILDARCH 
+--target=$PBTARGETARCH --exec-prefix=$PREFIX --includedir=$PREFIX --docdir=$PREFIX --disable-nls --disable-shared --disable-werror --disable-initfini-array --with-sysroot=/;
+"
+
 package_build
 package_install
-
-# Do not read further ,this is just the gcc build.sh,  the following part is yet to be done.
-
-cd "$DESTDIR/$PREFIX/bin"
-# escape pkgsrc jail
-ln -sf ./gcc ./gcc.pkgsrc
-
-# these are broken
-rm -rf $DESTDIR/$PREFIX/$TARGETNAME/qnx6/usr/include
-cp $EXECDIR/ldd $DESTDIR/$PREFIX/bin/
-  
-package_bundle
-
-# and pack up the system headers, etc
-cd "$BBTOOLS"
-zip -r -u -y "$ZIPFILE" $TARGETNAME/qnx6/armle-v7/lib $TARGETNAME/qnx6/usr/include --exclude \*qt4\* || true
-zip -r -u -y "$ZIPFILE" $TARGETNAME/qnx6/armle-v7/usr/lib --exclude \*qt4\* || true
-
-
