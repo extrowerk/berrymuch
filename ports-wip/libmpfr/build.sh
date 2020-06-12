@@ -20,9 +20,9 @@ if [ "$TASK" == "fetch" ]
 then
   cd "$EXECDIR"
   # fetch
-  echo "Fetching gcc sources if not already present"
+  echo "Fetching libmpfr sources if not already present"
 pwd
-  ls -d work/$DISTVER 2>/dev/null 2>&1 || \
+  ls -d work/$DISTVER/tools 2>/dev/null 2>&1 || \
 {
   cd work/$DISTVER
   git init
@@ -38,39 +38,13 @@ fi
 # Target have to be --target=arm-unknown-nto-qnx8.0.0eabi
 CONFIGURE_CMD="cd $EXECDIR/work/710_release/tools/libmpfr/branches/710_release/;
 				./configure 
-				--srcdir=`pwd` 
-				   --host=$PBHOSTARCH 
-                   --build=$PBBUILDARCH 
-                   --target=$PBTARGETARCH 
-                   MAKEINFO='/usr/bin/makeinfo --force'
-                   --srcdir=$EXECDIR/gcc 
-                   --with-as=ntoarm-as 
-                   --with-ld=ntoarm-ld 
-                   --with-sysroot=$QNX_TARGET 
-                   --disable-werror 
-                   --prefix=$PREFIX 
-                   --exec-prefix=$PREFIX 
-                   --libdir=$PREFIX/lib
-                   --libexecdir=$PREFIX/lib
-                   --with-local-prefix=$PREFIX
-                   --enable-cheaders=c 
-                   --enable-languages=c++ 
-                   --enable-threads=posix 
-                   --disable-nls 
-                   --disable-libssp 
-                   --disable-tls 
-                   --disable-libstdcxx-pch 
-                   --enable-libmudflap 
-                   --enable-__cxa_atexit 
-                   --with-gxx-include-dir=$PREFIX/$TARGETNAME/qnx6/usr/include/c++/4.6.3 
-                   --enable-multilib 
-                   --enable-shared 
-                   --enable-gnu-indirect-function 
-                   --with-arch=armv7-a --with-float=softfp --with-fpu=vfpv3-d16 --with-mode=thumb
-                   CC=$PBTARGETARCH-gcc 
-                   LDFLAGS='-Wl,-s ' 
-                   AUTOMAKE=: AUTOCONF=: AUTOHEADER=: AUTORECONF=: ACLOCAL=:
-                   "
+                --host=$PBHOSTARCH
+                --build=$PBBUILDARCH 
+                --target=$PBTARGETARCH 
+                --prefix=$PREFIX 
+                CC=$PBTARGETARCH-gcc 
+                CFLAGS=\"-I$PWD\"
+                "
 package_build
 package_install
 
