@@ -19,10 +19,9 @@ then
   cd "$EXECDIR"
   # fetch
   echo "Fetching binutils sources if not already present"
-pwd
-  ls -d work/$DISTVER/tools 2>/dev/null 2>&1 || \
+  ls -d $WORKROOT/$DISTVER/tools 2>&1 > /dev/null || \
 {
-  cd work/$DISTVER
+  cd $WORKROOT/$DISTVER
   git init
   git config core.sparseCheckout true
   echo "tools/binutils/branches/710_release/" >> .git/info/sparse-checkout
