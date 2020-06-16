@@ -36,17 +36,18 @@ CONFIGURE_CMD="
 cd 'tools/binutils/branches/710_release/';
 #make clean;
 #find . -name 'config.cache' -exec rm -rf {} \;;
-export ac_cv_func_ftello64=no;
-export ac_cv_func_fseeko64=no;
-export ac_cv_func_fopen64=no;
-export CC='$PBTARGETARCH-gcc';
-export CFLAGS='$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare';
-export LIBS='$LIBS -liconv';
-export LDFLAGS='-Wl,-s ';
-export LDFLAGS='$LDFLAGS -liconv';
+ac_cv_func_ftello64=no
+ac_cv_func_fseeko64=no
+ac_cv_func_fopen64=no
+CC='$PBTARGETARCH-gcc'
+CFLAGS='$CFLAGS -Wno-shadow -Wno-format -Wno-sign-compare';
+LIBS='$LIBS -liconv'
+LDFLAGS='-Wl,-s '
+LDFLAGS='$LDFLAGS -liconv'
 ./configure --prefix='$PREFIX' --host=$PBHOSTARCH --build=$PBBUILDARCH 
 --target=$PBTARGETARCH --exec-prefix=$PREFIX --includedir=$PREFIX --docdir=$PREFIX --disable-nls --disable-shared --disable-werror --disable-initfini-array --with-sysroot=/;
 "
 
 package_build
 package_install
+package_bundle
